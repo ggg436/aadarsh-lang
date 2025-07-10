@@ -167,14 +167,17 @@ export const getLesson = cache(async (id?: number) => {
   const courseProgress = await getCourseProgress();
 
   const lessonId = id || courseProgress?.activeLessonId;
-  const languageId = "neb";
+  // TODO: extract lesson question based on native language
+  // const languageId = "neb";
 
   if (!lessonId) {
     return null;
   }
 
   const data = await db.query.lessons.findFirst({
-    where: and(eq(lessons.id, lessonId), eq(lessons.language_id, languageId)),
+    // TODO: extract lesson question based on native language
+    // where: and(eq(lessons.id, lessonId), eq(lessons.language_id, languageId)),
+    where: eq(lessons.id, lessonId),
     with: {
       challenges: {
         orderBy: (challenges, { asc }) => [asc(challenges.order)],
