@@ -42,7 +42,7 @@ export const unitsRelations = relations(units, ({ many, one }) => ({
 export const lessons = pgTable("lessons", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
-  language_id: text("language_id"),
+  language_code: text("language_code"),
   unitId: integer("unit_id")
     .references(() => units.id, { onDelete: "cascade" })
     .notNull(),

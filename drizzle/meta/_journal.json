@@ -15,6 +15,13 @@
       "when": 1752164152645,
       "tag": "0001_cultured_selene",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1752313051805,
+      "tag": "0002_left_lady_ursula",
+      "breakpoints": true
     }
   ]
 }

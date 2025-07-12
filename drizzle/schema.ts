@@ -22,7 +22,7 @@ export const lessons = pgTable("lessons", {
 	title: text().notNull(),
 	unitId: integer("unit_id").notNull(),
 	order: integer().notNull(),
-	languageId: text("language_id"),
+	languageCode: text("language_code"),
 }, (table) => [
 	foreignKey({
 			columns: [table.unitId],
@@ -49,22 +49,8 @@ export const courses = pgTable("courses", {
 	id: serial().primaryKey().notNull(),
 	title: text().notNull(),
 	imageSrc: text("image_src").notNull(),
-	languageCode: text("language_code").notNull(),
+	languageCode: text("language_code"),
 });
-
-export const challenges = pgTable("challenges", {
-	id: serial().primaryKey().notNull(),
-	lessonId: integer("lesson_id").notNull(),
-	type: type().notNull(),
-	question: text().notNull(),
-	order: integer().notNull(),
-}, (table) => [
-	foreignKey({
-			columns: [table.lessonId],
-			foreignColumns: [lessons.id],
-			name: "challenges_lesson_id_lessons_id_fk"
-		}).onDelete("cascade"),
-]);
 
 export const userProgress = pgTable("user_progress", {
 	userId: text("user_id").primaryKey().notNull(),
@@ -92,6 +78,21 @@ export const userSubscription = pgTable("user_subscription", {
 	unique("user_subscription_user_id_unique").on(table.userId),
 	unique("user_subscription_stripe_customer_id_unique").on(table.stripeCustomerId),
 	unique("user_subscription_stripe_subscription_id_unique").on(table.stripeSubscriptionId),
+]);
+
+export const challenges = pgTable("challenges", {
+	id: serial().primaryKey().notNull(),
+	lessonId: integer("lesson_id").notNull(),
+	type: type().notNull(),
+	question: text().notNull(),
+	order: integer().notNull(),
+	languageCode: text("language_code"),
+}, (table) => [
+	foreignKey({
+			columns: [table.lessonId],
+			foreignColumns: [lessons.id],
+			name: "challenges_lesson_id_lessons_id_fk"
+		}).onDelete("cascade"),
 ]);
 
 export const challengeOptions = pgTable("challenge_options", {
