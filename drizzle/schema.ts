@@ -22,7 +22,6 @@ export const lessons = pgTable("lessons", {
 	title: text().notNull(),
 	unitId: integer("unit_id").notNull(),
 	order: integer().notNull(),
-	languageCode: text("language_code"),
 }, (table) => [
 	foreignKey({
 			columns: [table.unitId],

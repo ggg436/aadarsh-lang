@@ -57,6 +57,58 @@
       "policies": {},
       "isRLSEnabled": false
     },
+    "public.lessons": {
+      "name": "lessons",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "unit_id": {
+          "name": "unit_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "lessons_unit_id_units_id_fk": {
+          "name": "lessons_unit_id_units_id_fk",
+          "tableFrom": "lessons",
+          "tableTo": "units",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "unit_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {},
+      "policies": {},
+      "isRLSEnabled": false
+    },
     "public.units": {
       "name": "units",
       "schema": "",
@@ -141,70 +193,11 @@
           "name": "language_code",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         }
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {},
-      "policies": {},
-      "isRLSEnabled": false
-    },
-    "public.challenges": {
-      "name": "challenges",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "lesson_id": {
-          "name": "lesson_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "type": {
-          "name": "type",
-          "type": "type",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "question": {
-          "name": "question",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "order": {
-          "name": "order",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "challenges_lesson_id_lessons_id_fk": {
-          "name": "challenges_lesson_id_lessons_id_fk",
-          "tableFrom": "challenges",
-          "tableTo": "lessons",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "lesson_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {},
@@ -350,8 +343,8 @@
       "policies": {},
       "isRLSEnabled": false
     },
-    "public.lessons": {
-      "name": "lessons",
+    "public.challenges": {
+      "name": "challenges",
       "schema": "",
       "columns": {
         "id": {
@@ -360,15 +353,22 @@
           "primaryKey": true,
           "notNull": true
         },
-        "title": {
-          "name": "title",
-          "type": "text",
+        "lesson_id": {
+          "name": "lesson_id",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
-        "unit_id": {
-          "name": "unit_id",
-          "type": "integer",
+        "type": {
+          "name": "type",
+          "type": "type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "question": {
+          "name": "question",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
@@ -378,8 +378,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "language_id": {
-          "name": "language_id",
+        "language_code": {
+          "name": "language_code",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -387,13 +387,13 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "lessons_unit_id_units_id_fk": {
-          "name": "lessons_unit_id_units_id_fk",
-          "tableFrom": "lessons",
-          "tableTo": "units",
+        "challenges_lesson_id_lessons_id_fk": {
+          "name": "challenges_lesson_id_lessons_id_fk",
+          "tableFrom": "challenges",
+          "tableTo": "lessons",
           "schemaTo": "public",
           "columnsFrom": [
-            "unit_id"
+            "lesson_id"
           ],
           "columnsTo": [
             "id"

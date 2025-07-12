@@ -180,7 +180,6 @@ export const getLesson = cache(async (id?: number) => {
     where: eq(lessons.id, lessonId),
     with: {
       challenges: {
-        where: eq(challenges.language_code, languageCode),
         orderBy: (challenges, { asc }) => [asc(challenges.order)],
         with: {
           challengeOptions: true,
