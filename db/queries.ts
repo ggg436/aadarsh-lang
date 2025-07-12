@@ -169,7 +169,7 @@ export const getLesson = cache(async (id?: number) => {
 
   const lessonId = id || courseProgress?.activeLessonId;
   // TODO: extract lesson question based on native language
-  const languageCode = "neb";
+  const languageCode = "nep";
 
   if (!lessonId) {
     return null;
@@ -180,6 +180,7 @@ export const getLesson = cache(async (id?: number) => {
     where: eq(lessons.id, lessonId),
     with: {
       challenges: {
+        where: (challenges) => eq(challenges.language_code, languageCode),
         orderBy: (challenges, { asc }) => [asc(challenges.order)],
         with: {
           challengeOptions: true,
