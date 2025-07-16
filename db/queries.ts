@@ -81,12 +81,7 @@ export const getUnits = cache(async () => {
 });
 
 export const getCourses = cache(async () => {
-  // const data = await db.query.courses.findMany();
-  // get only nepal bhasa for now
-  // TODO: get all languages
-  const data = await db.query.courses.findMany({
-    where: eq(courses.language_code, "neb"),
-  });
+  const data = await db.query.courses.findMany();
 
   return data;
 });
@@ -110,8 +105,7 @@ export const getCourseById = cache(async (courseId: number) => {
 });
 
 export const getCourseProgress = cache(async () => {
-  // const { userId } = await auth();
-  const { userId } = auth();
+  const { userId } = await auth();
   const userProgress = await getUserProgress();
 
   if (!userId || !userProgress?.activeCourseId) {
@@ -158,7 +152,17 @@ export const getCourseProgress = cache(async () => {
   };
 });
 
-export const getLesson = cache(async (id?: number) => {
+export const getNativeLanguage = cache(async () => {
+  const { userId } = await auth();
+
+  if (!userId) {
+    return null;
+  }
+
+  const data = await db.query.challenges.language_code.findFirst({});
+});
+
+export const getLesson = cache(async (id?: number, language: string = "en") => {
   const { userId } = await auth();
 
   if (!userId) {
@@ -168,19 +172,18 @@ export const getLesson = cache(async (id?: number) => {
   const courseProgress = await getCourseProgress();
 
   const lessonId = id || courseProgress?.activeLessonId;
-  // TODO: extract lesson question based on native language
-  const languageCode = "nep";
+  console.log("this is languageCode before querying", language);
+  console.log("lessons.id, ", lessonId);
 
   if (!lessonId) {
     return null;
   }
 
   const data = await db.query.lessons.findFirst({
-    // TODO: extract lesson question based on native language
     where: eq(lessons.id, lessonId),
     with: {
       challenges: {
-        where: (challenges) => eq(challenges.language_code, languageCode),
+        where: (challenges) => eq(challenges.language_code, language),
         orderBy: (challenges, { asc }) => [asc(challenges.order)],
         with: {
           challengeOptions: true,
@@ -191,11 +194,6 @@ export const getLesson = cache(async (id?: number) => {
       },
     },
   });
-
-  console.log(
-    "data comming from querying lessons with lessions.id with challenges: ",
-    data,
-  );
 
   if (!data || !data.challenges) {
     return null;
@@ -210,10 +208,9 @@ export const getLesson = cache(async (id?: number) => {
     return { ...challenge, completed };
   });
 
-  console.log("normalizedChallenges: ", normalizedChallenges);
+  console.log("this is normalizedChallenges", normalizedChallenges);
 
   return { ...data, challenges: normalizedChallenges };
-  // return {...data, challenges}
 });
 
 export const getLessonPercentage = cache(async () => {
